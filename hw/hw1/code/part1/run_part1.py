@@ -4,6 +4,46 @@ import logger
 import json
 
 
+def play():
+    import cv2
+    from envs import GridWorldEnv
+    env1 = GridWorldEnv(seed=0)
+    t = 0
+    s_t = env1.reset()
+    print(
+        "Usage:\n" +\
+        "* Use arrow keys to move\n" +\
+        "* Esc to exit\n"
+    )
+    while True:
+        img = env1.render(mode='rgb_array')
+        cv2.imshow("Render", img)
+        print(f"s_{t}: {s_t}")
+
+        key_mapping = {82: 0, 84: 1, 81: 2, 83: 3} # Arrow keys: Up, Down, Left, Right
+        key = cv2.waitKey(0) & 0xFF
+        if key in key_mapping:
+            a_t = key_mapping[key]
+            print(f"a_t: {a_t}")
+        elif key == 27:  # Break the loop if the 'Esc' key is pressed
+            break
+        else:
+            print(f"Invalid key (i.e. {key}). Please press 'w', 's', 'a', or 'd'.")
+            continue
+
+        s_tp1, reward, done, env_info = env1.step(a_t)
+        print("----------")
+        print(f"reward: {reward}")
+        print(f"done: {done}")
+        print(f"env_info: {env_info}")
+        print("----------")
+        t += 1
+        s_t = s_tp1
+        if done:
+            print("Done")
+            break
+
+
 def main(args):
     render = args.render
     if not render:
@@ -12,8 +52,8 @@ def main(args):
         import matplotlib.pyplot as plt
     from utils.utils import TabularPolicy, TabularValueFun
     from part1.tabular_value_iteration import ValueIteration
-    from envs import Grid1DEnv, GridWorldEnv
-    envs = [GridWorldEnv(seed=0), GridWorldEnv(seed=1)]
+    from envs import GridWorldEnv
+    envs = [GridWorldEnv(seed=0)]
 
     for env in envs:
         env_name = env.__name__
@@ -43,3 +83,4 @@ if __name__ == "__main__":
                         help="Temperature parameter for maximum entropy policies")
     args = parser.parse_args()
     main(args)
+    # play()

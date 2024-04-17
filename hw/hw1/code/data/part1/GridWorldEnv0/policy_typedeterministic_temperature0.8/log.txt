@@ -1,0 +1,1 @@
+Logging to /home/aditya/cs287/hw/hw1/code/data/part1/GridWorldEnv0/policy_typedeterministic_temperature0.8/

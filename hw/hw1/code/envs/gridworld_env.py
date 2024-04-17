@@ -8,7 +8,7 @@ from utils.utils import DiscreteEnv, upsample
 
 class GridWorldEnv(DiscreteEnv):
     """
-    Actions: 0 left and 1 right
+    Actions: {0: Up, 1: Down, 2: Left, 3: Right}
     """
     def __init__(self, size=20, discount=0.99, seed=0):
         self.__name__ = self.__class__.__name__ + str(seed)
